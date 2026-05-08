@@ -1,9 +1,10 @@
-import { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react'
+import { createContext, useContext, useEffect, useRef, useMemo, useState, useCallback } from 'react'
 import { authApi } from '../api/endpoints'
 
 const AuthContext = createContext(null)
 const TOKEN_KEY = 'ucb_admin_token'
 const USER_KEY = 'ucb_admin'
+const INACTIVITY_MS = 30 * 60 * 1000 // 30 minutos
 
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => localStorage.getItem(TOKEN_KEY))
@@ -12,6 +13,7 @@ export function AuthProvider({ children }) {
     return raw ? JSON.parse(raw) : null
   })
   const [cargandoSesion, setCargandoSesion] = useState(true)
+  const inactivityTimer = useRef(null)
 
   const persist = useCallback((tok, user) => {
     if (tok) localStorage.setItem(TOKEN_KEY, tok); else localStorage.removeItem(TOKEN_KEY)
@@ -20,13 +22,35 @@ export function AuthProvider({ children }) {
     setAdmin(user || null)
   }, [])
 
+  const logout = useCallback(() => {
+    clearTimeout(inactivityTimer.current)
+    persist(null, null)
+  }, [persist])
+
+  const resetInactivityTimer = useCallback(() => {
+    clearTimeout(inactivityTimer.current)
+    inactivityTimer.current = setTimeout(() => {
+      persist(null, null)
+      window.alert('Sesión cerrada por inactividad. Por seguridad, inicia sesión nuevamente.')
+    }, INACTIVITY_MS)
+  }, [persist])
+
+  useEffect(() => {
+    if (!token) return
+    const events = ['mousedown', 'keydown', 'touchstart', 'scroll']
+    events.forEach((ev) => window.addEventListener(ev, resetInactivityTimer, { passive: true }))
+    resetInactivityTimer()
+    return () => {
+      clearTimeout(inactivityTimer.current)
+      events.forEach((ev) => window.removeEventListener(ev, resetInactivityTimer))
+    }
+  }, [token, resetInactivityTimer])
+
   const login = async (correo, password) => {
     const { data } = await authApi.login(correo, password)
     persist(data.data.token, data.data.admin)
     return data.data.admin
   }
-
-  const logout = () => persist(null, null)
 
   useEffect(() => {
     const verificar = async () => {

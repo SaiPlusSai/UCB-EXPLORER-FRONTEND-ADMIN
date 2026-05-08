@@ -32,3 +32,35 @@ export const analyticsApi = {
   carreras: () => api.get('/analytics/carreras'),
   topVisitantes: () => api.get('/analytics/top-visitantes'),
 }
+
+export const triviaApi = {
+  listar: (carrera_id) => api.get('/trivia/admin', { params: carrera_id ? { carrera_id } : {} }),
+  obtener: (id) => api.get(`/trivia/admin/${id}`),
+  crear: (data) => api.post('/trivia/admin', data),
+  actualizar: (id, data) => api.put(`/trivia/admin/${id}`, data),
+  eliminar: (id) => api.delete(`/trivia/admin/${id}`),
+}
+
+export const rewardsApi = {
+  listarAdmin: () => api.get('/premios/admin'),
+  crear: (data) => api.post('/premios/admin', data),
+  actualizar: (id, data) => api.put(`/premios/admin/${id}`, data),
+  eliminar: (id) => api.delete(`/premios/admin/${id}`),
+  canjes: () => api.get('/premios/admin/canjes'),
+}
+
+export const remindersApi = {
+  listarAdmin: () => api.get('/recordatorios/admin'),
+  crearAdmin: (data) => api.post('/recordatorios/admin', data),
+  actualizarAdmin: (id, data) => api.put(`/recordatorios/admin/${id}`, data),
+  eliminarAdmin: (id) => api.delete(`/recordatorios/admin/${id}`),
+}
+
+export const feedbackApi = {
+  listarAdmin: () => api.get('/feedback/admin'),
+  crear: (data) => api.post('/feedback/admin', data),
+  actualizar: (id, data) => api.put(`/feedback/admin/${id}`, data),
+  eliminar: (id) => api.delete(`/feedback/admin/${id}`),
+  respuestas: () => api.get('/feedback/admin/respuestas'),
+  respuestasPregunta: (id) => api.get(`/feedback/admin/${id}/respuestas`),
+}

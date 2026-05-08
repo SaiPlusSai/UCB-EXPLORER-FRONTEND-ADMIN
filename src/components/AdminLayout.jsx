@@ -21,23 +21,52 @@ export default function AdminLayout() {
     navigate('/login')
   }
 
+  const initials = admin?.correo
+    ? admin.correo.split('@')[0].slice(0, 2).toUpperCase()
+    : 'AD'
+
   return (
     <div className="admin-shell">
       <aside className="admin-sidebar">
-        <h1>UCB · Admin</h1>
-        {NAV.map((n) => (
-          <NavLink key={n.to} to={n.to} end={n.end}>
-            <span style={{ fontSize: 18 }}>{n.icon}</span>
-            <span>{n.label}</span>
-          </NavLink>
-        ))}
-        <div style={{ marginTop: 'auto', paddingTop: 20, fontSize: 12, color: 'rgba(255,255,255,0.7)' }}>
-          {admin?.correo}
-          <button onClick={handleLogout} className="admin-btn admin-btn--ghost admin-btn--sm" style={{ marginTop: 8, width: '100%' }}>
-            Cerrar sesión
+        <div className="admin-sidebar__brand">
+          <div className="admin-sidebar__logo">UCB</div>
+          <div>
+            <div style={{ fontWeight: 700, fontSize: 15, color: '#fff', lineHeight: 1 }}>Explorer</div>
+            <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', marginTop: 2 }}>Panel de Control</div>
+          </div>
+        </div>
+
+        <div className="admin-sidebar__divider" />
+
+        <nav style={{ flex: 1 }}>
+          {NAV.map((n) => (
+            <NavLink key={n.to} to={n.to} end={n.end}>
+              <span className="admin-sidebar__icon">{n.icon}</span>
+              <span>{n.label}</span>
+            </NavLink>
+          ))}
+        </nav>
+
+        <div className="admin-sidebar__divider" />
+
+        <div className="admin-sidebar__user">
+          <div className="admin-sidebar__avatar">{initials}</div>
+          <div style={{ flex: 1, overflow: 'hidden' }}>
+            <div style={{ fontSize: 12, color: '#fff', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {admin?.correo}
+            </div>
+            <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', marginTop: 1 }}>{admin?.rol || 'ADMIN'}</div>
+          </div>
+          <button
+            onClick={handleLogout}
+            title="Cerrar sesión"
+            style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.5)', cursor: 'pointer', fontSize: 16, padding: 4 }}
+          >
+            ⏻
           </button>
         </div>
       </aside>
+
       <main className="admin-content">
         <Outlet />
       </main>
