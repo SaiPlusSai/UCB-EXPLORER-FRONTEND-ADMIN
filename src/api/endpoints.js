@@ -50,11 +50,39 @@ export const triviaApi = {
 }
 
 export const rewardsApi = {
-  listarAdmin: () => api.get('/premios/admin'),
-  crear: (data) => api.post('/premios/admin', data),
-  actualizar: (id, data) => api.put(`/premios/admin/${id}`, data),
-  eliminar: (id) => api.delete(`/premios/admin/${id}`),
-  canjes: () => api.get('/premios/admin/canjes'),
+
+  listarAdmin: () =>
+    api.get('/premios/admin'),
+
+  crear: (data) =>
+    api.post('/premios/admin', data),
+
+  actualizar: (id, data) =>
+    api.put(`/premios/admin/${id}`, data),
+
+  eliminar: (id) =>
+    api.delete(`/premios/admin/${id}`),
+
+  canjes: () =>
+    api.get('/premios/admin/canjes'),
+
+  uploadImagen: (file) => {
+
+    const formData = new FormData()
+
+    formData.append('imagen', file)
+
+    return api.post(
+      '/premios/admin/upload',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    )
+  },
+
 }
 
 export const remindersApi = {

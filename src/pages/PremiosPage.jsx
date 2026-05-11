@@ -210,12 +210,55 @@ function PremioModal({ inicial, onCerrar, onGuardar }) {
           onChange={(e) => setForm({ ...form, descripcion: e.target.value })}
         />
 
-        <label className="admin-label">URL de imagen</label>
-        <input
-          className="admin-input" type="url" value={form.imagen_url}
-          onChange={(e) => setForm({ ...form, imagen_url: e.target.value })}
-          placeholder="https://..."
-        />
+        <label className="admin-label">
+  Imagen
+</label>
+
+<input
+  className="admin-input"
+  type="file"
+  accept="image/*"
+  onChange={async (e) => {
+
+    const file = e.target.files?.[0]
+
+    if (!file) return
+
+    try {
+
+      setError('')
+
+      const res =
+        await rewardsApi.uploadImagen(file)
+
+      setForm({
+        ...form,
+        imagen_url: res.data.url,
+      })
+
+    } catch (error) {
+
+      setError(
+        error.response?.data?.error ||
+        'Error subiendo imagen'
+      )
+    }
+  }}
+/>
+
+{form.imagen_url && (
+  <img
+    src={form.imagen_url}
+    alt="preview"
+    style={{
+      width: '100%',
+      maxHeight: 180,
+      objectFit: 'cover',
+      borderRadius: 12,
+      marginTop: 12,
+    }}
+  />
+)}
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
           <div>
