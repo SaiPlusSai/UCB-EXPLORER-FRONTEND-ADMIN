@@ -9,6 +9,12 @@ const NAV = [
   { to: '/premios', label: 'Premios', icon: '🎁' },
   { to: '/feedback', label: 'Feedback', icon: '💬' },
   { to: '/recordatorios', label: 'Recordatorios', icon: '🗓️' },
+   {
+    to: '/qr',
+    label: 'QR',
+    icon: '📷',
+  },
+
   { to: '/admins', label: 'Administradores', icon: '👥' },
 ]
 

@@ -11,7 +11,7 @@ import PremiosPage from './pages/PremiosPage.jsx'
 import FeedbackPage from './pages/FeedbackPage.jsx'
 import RecordatoriosPage from './pages/RecordatoriosPage.jsx'
 import AdminsPage from './pages/AdminsPage.jsx'
-
+import QRPage from './pages/QRPage.jsx'
 function ProtectedRoute({ children }) {
   const { token, cargandoSesion } = useAuth()
   if (cargandoSesion) return <div className="admin-loader" />
@@ -39,6 +39,11 @@ function App() {
         <Route path="feedback" element={<FeedbackPage />} />
         <Route path="recordatorios" element={<RecordatoriosPage />} />
         <Route path="admins" element={<AdminsPage />} />
+        <Route
+          path="qr"
+          element={<QRPage />}
+        />
+
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

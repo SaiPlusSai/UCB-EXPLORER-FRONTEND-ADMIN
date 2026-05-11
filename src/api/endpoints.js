@@ -100,3 +100,22 @@ export const feedbackApi = {
   respuestas: () => api.get('/feedback/admin/respuestas'),
   respuestasPregunta: (id) => api.get(`/feedback/admin/${id}/respuestas`),
 }
+export const qrApi = {
+
+  generar: (data) =>
+    api.post(
+      '/qr/admin/generar',
+      data
+    ),
+
+  listarGenerados: () =>
+    api.get(
+      '/qr/admin/generados'
+    ),
+
+  historial: () =>
+    api.get(
+      '/qr/admin/escaneos'
+    ),
+
+}
