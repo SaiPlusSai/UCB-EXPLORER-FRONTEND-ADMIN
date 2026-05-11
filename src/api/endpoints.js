@@ -18,12 +18,20 @@ export const carrerasApi = {
 }
 
 export const colegiosApi = {
-  listar: () => api.get('/colegios'),
-  crear: (nombre) => api.post('/colegios', { nombre }),
-  actualizar: (id, nombre) => api.put(`/colegios/${id}`, { nombre }),
-  eliminar: (id) => api.delete(`/colegios/${id}`),
-}
 
+  listar: () =>
+    api.get('/colegios'),
+
+  crear: (data) =>
+    api.post('/colegios', data),
+
+  actualizar: (id, data) =>
+    api.put(`/colegios/${id}`, data),
+
+  eliminar: (id) =>
+    api.delete(`/colegios/${id}`),
+
+}
 
 
 export const analyticsApi = {

@@ -319,3 +319,432 @@ a { color: inherit; text-decoration: none; }
   .admin-sidebar a span:last-child { display: none; }
   .admin-content { padding: 16px; }
 }
+/* =========================
+   COLEGIOS PAGE
+========================= */
+
+.college-page {
+  padding: 24px;
+  color: var(--ucb-azul-oscuro);
+}
+
+.college-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.college-subtitle {
+  color: #94a3b8;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.college-title {
+  color: var(--ucb-azul-oscuro);
+}
+
+.college-create-btn {
+  background: linear-gradient(
+    135deg,
+    #facc15,
+    #eab308
+  );
+
+  color: #111827;
+
+  border: none;
+
+  padding: 14px 22px;
+
+  border-radius: 14px;
+
+  font-weight: 700;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.college-create-btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.95;
+}
+
+/* =========================
+   TABLE CARD
+========================= */
+
+.college-table-card {
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 24px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 8px 30px rgba(0,0,0,0.06);
+}
+
+.college-table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 22px;
+}
+
+.college-search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+ background: #f8fafc;
+
+  border: 1px solid #dbe3ee;
+
+  border-radius: 14px;
+
+  padding: 12px 16px;
+
+  width: 320px;
+
+  color: var(--ucb-gris);
+}
+
+.college-search-box input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--ucb-azul-oscuro);
+  width: 100%;
+}
+
+.college-search-box input::placeholder {
+  color: #64748b;
+}
+
+.college-count {
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.college-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.college-table thead {
+  background: #f8fafc;
+}
+.college-table th {
+  text-align: left;
+  padding: 18px 22px;
+
+  color: var(--ucb-azul-oscuro);
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.08em;
+}
+
+.college-table td {
+  padding: 22px;
+
+  border-top: 1px solid #eef2f7;
+}
+
+.college-table tbody tr {
+  transition: 0.18s ease;
+}
+
+.college-table tbody tr:hover {
+  background: #f8fbff;
+}
+
+/* =========================
+   NAME
+========================= */
+
+.college-name {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.college-name strong {
+  display: block;
+  font-size: 15px;
+}
+
+.college-name p {
+  margin-top: 5px;
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+/* =========================
+   LOCATION
+========================= */
+
+.college-location {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: var(--ucb-gris);
+}
+
+.college-country-pill {
+  background: rgba(250, 204, 21, 0.12);
+
+  color: #facc15;
+
+  padding: 8px 14px;
+
+  border-radius: 999px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+
+.college-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.college-icon-btn {
+  width: 38px;
+  height: 38px;
+
+  border-radius: 12px;
+
+  border: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition: 0.18s ease;
+}
+
+.college-icon-btn.edit {
+  background: rgba(59,130,246,0.15);
+  color: #60a5fa;
+}
+
+.college-icon-btn.delete {
+  background: rgba(239,68,68,0.15);
+  color: #f87171;
+}
+
+.college-icon-btn:hover {
+  transform: scale(1.05);
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.college-modal-overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(15, 23, 42, 0.45);
+
+  backdrop-filter: blur(4px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  z-index: 999;
+}
+.college-modal {
+  width: 100%;
+  max-width: 620px;
+
+  background: white;
+
+  border-radius: 24px;
+
+  padding: 30px;
+
+  max-height: 90vh;
+
+  overflow-y: auto;
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.25);
+
+  animation: modalPop 0.22s ease;
+}
+@keyframes modalPop {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.college-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 30px;
+}
+
+.college-modal-header p {
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.college-modal-header h3 {
+  font-size: 28px;
+  margin-top: 5px;
+}
+
+.college-close-btn {
+  width: 42px;
+  height: 42px;
+
+  border-radius: 12px;
+
+  border: none;
+
+  background: rgba(255,255,255,0.06);
+
+  color: white;
+
+  cursor: pointer;
+}
+
+.college-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.college-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.college-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.college-form-group label {
+  color: var(--ucb-azul-oscuro);
+  font-size: 14px;
+}
+
+.college-input {
+  background: #fff;
+  border: 1px solid #dbe3ee;
+
+  border-radius: 14px;
+
+  padding: 14px 16px;
+
+  color: var(--ucb-azul-oscuro);
+
+  outline: none;
+
+  transition: 0.18s ease;
+}
+
+.college-input:focus {
+  border-color: #facc15;
+}
+
+.college-save-btn {
+  margin-top: 12px;
+
+  background: linear-gradient(
+    135deg,
+    #facc15,
+    #eab308
+  );
+
+  color: #111827;
+
+  border: none;
+
+  padding: 16px;
+
+  border-radius: 14px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.18s ease;
+}
+
+.college-save-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* =========================
+   ALERTS
+========================= */
+
+.admin-error {
+  margin-bottom: 18px;
+
+  background: rgba(239,68,68,0.12);
+
+  color: #fca5a5;
+
+  border: 1px solid rgba(239,68,68,0.3);
+
+  padding: 14px 18px;
+
+  border-radius: 14px;
+}
+
+.admin-success {
+  margin-bottom: 18px;
+
+  background: rgba(34,197,94,0.12);
+
+  color: #86efac;
+
+  border: 1px solid rgba(34,197,94,0.3);
+
+  padding: 14px 18px;
+
+  border-radius: 14px;
+}
