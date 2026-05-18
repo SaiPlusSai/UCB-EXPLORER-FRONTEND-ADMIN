@@ -1,4 +1,18 @@
 import { useEffect, useState } from 'react'
+
+import {
+  Plus,
+  Pencil,
+  Trash2,
+  Power,
+  Star,
+  MessageSquare,
+  ChartColumn,
+  LayoutGrid,
+  CalendarDays,
+  X,
+} from 'lucide-react'
+
 import { feedbackApi } from '../api/endpoints'
 
 const TIPOS = [
@@ -33,11 +47,12 @@ function BarChart({ data }) {
   )
 
   return (
+
     <div
       style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: 6,
+        gap: 8,
       }}
     >
 
@@ -48,40 +63,44 @@ function BarChart({ data }) {
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: 8,
+            gap: 10,
           }}
         >
 
           <span
             style={{
-              width: 20,
-              textAlign: 'right',
+              width: 28,
               fontSize: 12,
-              fontWeight: 600,
-              color: '#004077',
+              fontWeight: 700,
+              color: '#475569',
             }}
           >
+
             {d.label}
+
           </span>
 
           <div
             style={{
               flex: 1,
-              background: '#f0f4f8',
-              borderRadius: 6,
               height: 20,
+              background: '#e2e8f0',
+              borderRadius: 999,
               overflow: 'hidden',
             }}
           >
 
             <div
               style={{
-                width: `${(d.valor / max) * 100}%`,
+                width: `${
+                  (d.valor / max) * 100
+                }%`,
                 height: '100%',
                 background:
-                  'linear-gradient(90deg, #004077, #1d6fb1)',
-                borderRadius: 6,
-                transition: 'width 0.5s ease',
+                  'linear-gradient(90deg,#facc15,#eab308)',
+                borderRadius: 999,
+                transition:
+                  'width .25s ease',
               }}
             />
 
@@ -89,15 +108,18 @@ function BarChart({ data }) {
 
           <span
             style={{
-              fontSize: 12,
               width: 30,
-              color: '#6b7280',
+              fontSize: 12,
+              color: '#64748b',
             }}
           >
+
             {d.valor}
+
           </span>
 
         </div>
+
       ))}
 
     </div>
@@ -127,11 +149,13 @@ export default function FeedbackPage() {
 
     try {
 
-      const [pregRes, respRes] =
-        await Promise.all([
-          feedbackApi.listarAdmin(),
-          feedbackApi.respuestas(),
-        ])
+      const [
+        pregRes,
+        respRes,
+      ] = await Promise.all([
+        feedbackApi.listarAdmin(),
+        feedbackApi.respuestas(),
+      ])
 
       setItems(pregRes.data.data)
 
@@ -147,6 +171,7 @@ export default function FeedbackPage() {
     } finally {
 
       setCargando(false)
+
     }
   }
 
@@ -176,10 +201,13 @@ export default function FeedbackPage() {
         e.response?.data?.error ||
         'No se pudo eliminar'
       )
+
     }
   }
 
-  const toggleActiva = async (item) => {
+  const toggleActiva = async (
+    item
+  ) => {
 
     try {
 
@@ -198,10 +226,13 @@ export default function FeedbackPage() {
         e.response?.data?.error ||
         'No se pudo actualizar'
       )
+
     }
   }
 
-  const guardar = async (datos) => {
+  const guardar = async (
+    datos
+  ) => {
 
     try {
 
@@ -214,7 +245,10 @@ export default function FeedbackPage() {
 
       } else {
 
-        await feedbackApi.crear(datos)
+        await feedbackApi.crear(
+          datos
+        )
+
       }
 
       setEditando(null)
@@ -227,6 +261,7 @@ export default function FeedbackPage() {
         e.response?.data?.error ||
         'No se pudo guardar'
       )
+
     }
   }
 
@@ -234,18 +269,24 @@ export default function FeedbackPage() {
     preguntaId
   ) => {
 
-    const rs = respuestas.filter(
-      (r) =>
-        r.pregunta_id === preguntaId &&
-        r.valor_rating != null
-    )
+    const rs =
+      respuestas.filter(
+        (r) =>
+          r.pregunta_id ===
+            preguntaId &&
+          r.valor_rating != null
+      )
 
-    if (rs.length === 0) return null
+    if (rs.length === 0)
+      return null
 
     const prom =
       rs.reduce(
         (s, r) =>
-          s + Number(r.valor_rating),
+          s +
+          Number(
+            r.valor_rating
+          ),
         0
       ) / rs.length
 
@@ -256,51 +297,75 @@ export default function FeedbackPage() {
     preguntaId
   ) => {
 
-    const rs = respuestas.filter(
-      (r) =>
-        r.pregunta_id === preguntaId &&
-        r.valor_rating != null
-    )
-
-    return [1, 2, 3, 4, 5].map((n) => ({
-      label: `${n}★`,
-      valor: rs.filter(
+    const rs =
+      respuestas.filter(
         (r) =>
-          Number(r.valor_rating) === n
-      ).length,
-    }))
+          r.pregunta_id ===
+            preguntaId &&
+          r.valor_rating != null
+      )
+
+    return [1, 2, 3, 4, 5].map(
+      (n) => ({
+        label: `${n}★`,
+        valor: rs.filter(
+          (r) =>
+            Number(
+              r.valor_rating
+            ) === n
+        ).length,
+      })
+    )
   }
 
   const totalRespuestasPorPregunta =
     (id) =>
       respuestas.filter(
-        (r) => r.pregunta_id === id
+        (r) =>
+          r.pregunta_id === id
       ).length
 
   const resumenCategorias =
     CATEGORIAS.map((cat) => ({
       categoria: cat,
       total: items.filter(
-        (i) => i.categoria === cat
+        (i) =>
+          i.categoria === cat
       ).length,
     })).filter((c) => c.total > 0)
 
   return (
-    <>
 
-      <div className="admin-topbar">
+    <div className="panel-page">
 
-        <h2>Feedback</h2>
+      <div className="panel-topbar">
+
+        <div>
+
+          <p className="panel-subtitle">
+            Panel Administrativo
+          </p>
+
+          <h1 className="panel-title">
+            Feedback
+          </h1>
+
+        </div>
 
         <button
-          className="admin-btn admin-btn--accent"
+          className="panel-create-btn"
           onClick={() =>
             setEditando({
-              tipo_pregunta: 'rating',
+              tipo_pregunta:
+                'rating',
             })
           }
         >
-          + Nueva pregunta
+
+          <Plus size={18} />
+
+          Nueva Pregunta
+
         </button>
 
       </div>
@@ -312,261 +377,397 @@ export default function FeedbackPage() {
       )}
 
       {cargando ? (
-        <div className="admin-loader" />
-      ) : (
-        <>
 
+        <div className="admin-loader" />
+
+      ) : (
+
+        <>
           <div
             style={{
               display: 'flex',
               gap: 10,
               flexWrap: 'wrap',
-              marginBottom: 18,
+              marginBottom: 22,
             }}
           >
 
-            {resumenCategorias.map((c) => (
+            {resumenCategorias.map(
+              (c) => (
 
-              <span
-                key={c.categoria}
-                className="admin-chip admin-chip--off"
-              >
-                {c.categoria}: {c.total}
-              </span>
+                <span
+                  key={
+                    c.categoria
+                  }
+                  className="panel-pill panel-pill-neutral"
+                >
 
-            ))}
+                  <LayoutGrid
+                    size={13}
+                    style={{
+                      marginRight: 6,
+                    }}
+                  />
+
+                  {c.categoria}:{' '}
+                  {c.total}
+
+                </span>
+
+              )
+            )}
 
           </div>
 
-          <table className="admin-table">
+          <div className="panel-table-card">
 
-            <thead>
+            <div className="panel-table-wrapper">
 
-              <tr>
-                <th>Pregunta</th>
-                <th>Tipo</th>
-                <th>Categoría</th>
-                <th>Respuestas</th>
-                <th>Promedio</th>
-                <th>Estado</th>
-                <th></th>
-              </tr>
+              <table className="panel-table">
 
-            </thead>
+                <thead>
 
-            <tbody>
+                  <tr>
 
-              {items.map((p) => (
+                    <th>Pregunta</th>
 
-                <tr key={p.id}>
+                    <th>Tipo</th>
 
-                  <td>
-                    {p.pregunta}
-                  </td>
+                    <th>Categoría</th>
 
-                  <td>
+                    <th>Respuestas</th>
 
-                    <span
-                      className={`admin-chip ${
-                        p.tipo_pregunta === 'rating'
-                          ? 'admin-chip--gold'
-                          : 'admin-chip--off'
-                      }`}
-                    >
-                      {p.tipo_pregunta === 'rating'
-                        ? '⭐ Rating'
-                        : '✏️ Texto'}
-                    </span>
+                    <th>Promedio</th>
 
-                  </td>
+                    <th>Estado</th>
 
-                  <td>
+                    <th>Acciones</th>
 
-                    <span className="admin-chip admin-chip--off">
-                      {p.categoria || 'General'}
-                    </span>
+                  </tr>
 
-                  </td>
+                </thead>
 
-                  <td>
-                    {totalRespuestasPorPregunta(p.id)}
-                  </td>
+                <tbody>
 
-                  <td>
+                  {items.map((p) => (
 
-                    {p.tipo_pregunta === 'rating'
-                      ? (
-                        ratingPorPregunta(p.id)
-                          ? `⭐ ${ratingPorPregunta(p.id)}/5`
-                          : '—'
-                      )
-                      : '—'}
+                    <tr key={p.id}>
 
-                  </td>
+                      <td>
 
-                  <td>
+                        <div className="panel-entity">
 
-                    <span
-                      className={`admin-chip ${
-                        p.activa
-                          ? 'admin-chip--ok'
-                          : 'admin-chip--off'
-                      }`}
-                    >
-                      {p.activa
-                        ? 'Activa'
-                        : 'Inactiva'}
-                    </span>
+                          <MessageSquare
+                            size={18}
+                          />
 
-                  </td>
+                          <div>
 
-                  <td className="admin-row">
+                            <strong>
+                              {
+                                p.pregunta
+                              }
+                            </strong>
 
-                    <button
-                      className="admin-btn admin-btn--ghost admin-btn--sm"
-                      onClick={() => setEditando(p)}
-                    >
-                      Editar
-                    </button>
+                          </div>
 
-                    <button
-                      className="admin-btn admin-btn--ghost admin-btn--sm"
-                      onClick={() => toggleActiva(p)}
-                    >
-                      {p.activa
-                        ? 'Desactivar'
-                        : 'Activar'}
-                    </button>
+                        </div>
 
-                    <button
-                      className="admin-btn admin-btn--danger admin-btn--sm"
-                      onClick={() => eliminar(p.id)}
-                    >
-                      Eliminar
-                    </button>
+                      </td>
 
-                  </td>
+                      <td>
 
-                </tr>
-              ))}
+                        <span
+                          className={`panel-pill ${
+                            p.tipo_pregunta ===
+                            'rating'
+                              ? 'panel-pill-warning'
+                              : 'panel-pill-neutral'
+                          }`}
+                        >
 
-              {items.length === 0 && (
+                          {p.tipo_pregunta ===
+                          'rating'
+                            ? '⭐ Rating'
+                            : '✏️ Texto'}
 
-                <tr>
+                        </span>
 
-                  <td
-                    colSpan="7"
-                    style={{
-                      textAlign: 'center',
-                      color: '#6b7280',
-                    }}
-                  >
-                    Sin preguntas registradas
-                  </td>
+                      </td>
 
-                </tr>
-              )}
+                      <td>
 
-            </tbody>
+                        <span className="panel-pill panel-pill-neutral">
 
-          </table>
+                          {
+                            p.categoria
+                          }
+
+                        </span>
+
+                      </td>
+
+                      <td>
+
+                        {
+                          totalRespuestasPorPregunta(
+                            p.id
+                          )
+                        }
+
+                      </td>
+
+                      <td>
+
+                        {p.tipo_pregunta ===
+                        'rating' ? (
+
+                          ratingPorPregunta(
+                            p.id
+                          ) ? (
+
+                            <span className="panel-pill panel-pill-warning">
+
+                              ⭐{' '}
+                              {ratingPorPregunta(
+                                p.id
+                              )}
+                              /5
+
+                            </span>
+
+                          ) : (
+                            '—'
+                          )
+
+                        ) : (
+                          '—'
+                        )}
+
+                      </td>
+
+                      <td>
+
+                        <span
+                          className={`panel-pill ${
+                            p.activa
+                              ? 'panel-pill-success'
+                              : 'panel-pill-neutral'
+                          }`}
+                        >
+
+                          {p.activa
+                            ? 'Activa'
+                            : 'Inactiva'}
+
+                        </span>
+
+                      </td>
+
+                      <td>
+
+                        <div className="panel-actions">
+
+                          <button
+                            className="panel-icon-btn edit"
+                            data-tooltip="Editar"
+                            onClick={() =>
+                              setEditando(
+                                p
+                              )
+                            }
+                          >
+
+                            <Pencil size={16} />
+
+                          </button>
+
+                          <button
+                            className="panel-icon-btn warning"
+                            data-tooltip="Activar/Desactivar Pregunta"
+                            onClick={() =>
+                              toggleActiva(
+                                p
+                              )
+                            }
+                          >
+
+                            <Power size={16} />
+
+                          </button>
+
+                          <button
+                            className="panel-icon-btn delete"
+                            data-tooltip="Eliminar Pregunta"
+                            onClick={() =>
+                              eliminar(
+                                p.id
+                              )
+                            }
+                          >
+
+                            <Trash2 size={16} />
+
+                          </button>
+
+                        </div>
+
+                      </td>
+
+                    </tr>
+
+                  ))}
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
 
           {items.filter(
             (p) =>
-              p.tipo_pregunta === 'rating'
+              p.tipo_pregunta ===
+              'rating'
           ).length > 0 && (
 
             <>
-
-              <h3
+              <div
                 style={{
-                  marginTop: 28,
-                  marginBottom: 14,
-                  color: '#002d54',
+                  marginTop: 34,
+                  marginBottom: 18,
                 }}
               >
-                Análisis de ratings
-              </h3>
+
+                <p className="panel-subtitle">
+                  Estadísticas
+                </p>
+
+                <h2
+                  style={{
+                    margin: 0,
+                    color:
+                      'var(--ucb-azul-oscuro)',
+                  }}
+                >
+
+                  Análisis de Ratings
+
+                </h2>
+
+              </div>
 
               <div
                 style={{
                   display: 'grid',
                   gridTemplateColumns:
-                    'repeat(auto-fit, minmax(280px, 1fr))',
-                  gap: 16,
-                  marginBottom: 24,
+                    'repeat(auto-fit,minmax(320px,1fr))',
+                  gap: 20,
+                  marginBottom: 30,
                 }}
               >
 
                 {items
                   .filter(
                     (p) =>
-                      p.tipo_pregunta === 'rating'
+                      p.tipo_pregunta ===
+                      'rating'
                   )
                   .map((p) => (
 
                     <div
                       key={p.id}
-                      className="admin-card"
+                      className="panel-table-card"
+                      style={{
+                        padding: 24,
+                      }}
                     >
 
                       <div
                         style={{
-                          fontWeight: 600,
-                          fontSize: 14,
-                          marginBottom: 4,
-                          color: '#002d54',
+                          display:
+                            'flex',
+                          alignItems:
+                            'center',
+                          gap: 8,
+                          marginBottom: 16,
                         }}
                       >
-                        {p.pregunta}
+
+                        <ChartColumn
+                          size={18}
+                        />
+
+                        <strong>
+
+                          {
+                            p.pregunta
+                          }
+
+                        </strong>
+
                       </div>
 
-                      {ratingPorPregunta(p.id)
-                        ? (
-                          <>
+                      {ratingPorPregunta(
+                        p.id
+                      ) ? (
 
-                            <div
-                              style={{
-                                fontSize: 28,
-                                fontWeight: 700,
-                                color: '#004077',
-                                marginBottom: 10,
-                              }}
-                            >
-                              ⭐ {ratingPorPregunta(p.id)}
-
-                              <span
-                                style={{
-                                  fontSize: 14,
-                                  fontWeight: 400,
-                                  color: '#6b7280',
-                                }}
-                              >
-                                /5
-                              </span>
-
-                            </div>
-
-                            <BarChart
-                              data={
-                                distribucionRating(p.id)
-                              }
-                            />
-
-                          </>
-                        )
-                        : (
+                        <>
                           <div
                             style={{
-                              color: '#6b7280',
-                              fontSize: 13,
+                              fontSize: 42,
+                              fontWeight: 800,
+                              color:
+                                '#eab308',
+                              marginBottom: 18,
                             }}
                           >
-                            Sin respuestas aún
+
+                            ⭐{' '}
+                            {ratingPorPregunta(
+                              p.id
+                            )}
+
+                            <span
+                              style={{
+                                fontSize: 16,
+                                color:
+                                  '#94a3b8',
+                              }}
+                            >
+
+                              /5
+
+                            </span>
+
                           </div>
-                        )}
+
+                          <BarChart
+                            data={distribucionRating(
+                              p.id
+                            )}
+                          />
+
+                        </>
+
+                      ) : (
+
+                        <div
+                          style={{
+                            color:
+                              '#64748b',
+                          }}
+                        >
+
+                          Sin respuestas aún
+
+                        </div>
+
+                      )}
 
                     </div>
+
                   ))}
 
               </div>
@@ -577,139 +778,173 @@ export default function FeedbackPage() {
           <div
             style={{
               display: 'flex',
+              justifyContent:
+                'space-between',
               alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: 10,
+              marginBottom: 16,
             }}
           >
 
-            <h3
-              style={{
-                margin: 0,
-                color: '#002d54',
-              }}
-            >
-              Respuestas recientes
-            </h3>
+            <div>
 
-            <span className="admin-chip admin-chip--gold">
-              {respuestas.length} total
+              <p className="panel-subtitle">
+                Actividad
+              </p>
+
+              <h2
+                style={{
+                  margin: 0,
+                  color:
+                    'var(--ucb-azul-oscuro)',
+                }}
+              >
+
+                Respuestas recientes
+
+              </h2>
+
+            </div>
+
+            <span className="panel-pill panel-pill-warning">
+
+              {respuestas.length}{' '}
+              total
+
             </span>
 
           </div>
 
-          <table className="admin-table">
+          <div className="panel-table-card">
 
-            <thead>
+            <div className="panel-table-wrapper">
 
-              <tr>
-                <th>Pregunta</th>
-                <th>Tipo</th>
-                <th>Respuesta</th>
-                <th>Visitante</th>
-                <th>Fecha</th>
-              </tr>
+              <table className="panel-table">
 
-            </thead>
+                <thead>
 
-            <tbody>
+                  <tr>
 
-              {respuestas
-                .slice(0, 100)
-                .map((r) => (
+                    <th>Pregunta</th>
 
-                  <tr key={r.id}>
+                    <th>Tipo</th>
 
-                    <td
-                      style={{
-                        maxWidth: 200,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {r.pregunta}
-                    </td>
+                    <th>Respuesta</th>
 
-                    <td>
+                    <th>Visitante</th>
 
-                      <span
-                        className={`admin-chip ${
-                          r.tipo_pregunta === 'rating'
-                            ? 'admin-chip--gold'
-                            : 'admin-chip--off'
-                        }`}
-                      >
-                        {r.tipo_pregunta === 'rating'
-                          ? '⭐ Rating'
-                          : '✏️ Texto'}
-                      </span>
-
-                    </td>
-
-                    <td>
-
-                      {r.tipo_pregunta === 'rating'
-                        ? (
-                          <span className="admin-chip admin-chip--gold">
-                            ⭐ {r.valor_rating}/5
-                          </span>
-                        )
-                        : (
-                          <span
-                            style={{
-                              fontSize: 13,
-                              color: '#374151',
-                            }}
-                          >
-                            {r.respuesta_texto || '—'}
-                          </span>
-                        )}
-
-                    </td>
-
-                    <td>
-                      #{r.visitante_id}
-                    </td>
-
-                    <td
-                      style={{
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {new Date(
-                        r.respondido_en
-                      ).toLocaleString('es-BO')}
-                    </td>
+                    <th>Fecha</th>
 
                   </tr>
-                ))}
 
-              {respuestas.length === 0 && (
+                </thead>
 
-                <tr>
+                <tbody>
 
-                  <td
-                    colSpan="5"
-                    style={{
-                      textAlign: 'center',
-                      color: '#6b7280',
-                    }}
-                  >
-                    Sin respuestas aún
-                  </td>
+                  {respuestas
+                    .slice(0, 100)
+                    .map((r) => (
 
-                </tr>
-              )}
+                      <tr key={r.id}>
 
-            </tbody>
+                        <td>
 
-          </table>
+                          {
+                            r.pregunta
+                          }
 
+                        </td>
+
+                        <td>
+
+                          <span
+                            className={`panel-pill ${
+                              r.tipo_pregunta ===
+                              'rating'
+                                ? 'panel-pill-warning'
+                                : 'panel-pill-neutral'
+                            }`}
+                          >
+
+                            {r.tipo_pregunta ===
+                            'rating'
+                              ? '⭐ Rating'
+                              : '✏️ Texto'}
+
+                          </span>
+
+                        </td>
+
+                        <td>
+
+                          {r.tipo_pregunta ===
+                          'rating' ? (
+
+                            <span className="panel-pill panel-pill-warning">
+
+                              ⭐{' '}
+                              {
+                                r.valor_rating
+                              }
+                              /5
+
+                            </span>
+
+                          ) : (
+
+                            r.respuesta_texto ||
+                            '—'
+
+                          )}
+
+                        </td>
+
+                        <td>
+
+                          #
+                          {
+                            r.visitante_id
+                          }
+
+                        </td>
+
+                        <td>
+
+                          <div className="panel-location">
+
+                            <CalendarDays
+                              size={15}
+                            />
+
+                            <span>
+
+                              {new Date(
+                                r.respondido_en
+                              ).toLocaleString(
+                                'es-BO'
+                              )}
+
+                            </span>
+
+                          </div>
+
+                        </td>
+
+                      </tr>
+
+                    ))}
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
         </>
       )}
 
       {editando && (
+
         <FeedbackModal
           inicial={editando}
           onCerrar={() =>
@@ -717,9 +952,10 @@ export default function FeedbackPage() {
           }
           onGuardar={guardar}
         />
+
       )}
 
-    </>
+    </div>
   )
 }
 
@@ -770,161 +1006,207 @@ function FeedbackModal({
     } finally {
 
       setEnviando(false)
+
     }
   }
 
   return (
+
     <div
-      className="admin-modal-overlay"
+      className="panel-modal-overlay"
       onClick={onCerrar}
     >
 
       <form
-        className="admin-modal"
+        className="panel-modal"
         onClick={(e) =>
           e.stopPropagation()
         }
         onSubmit={submit}
       >
 
-        <h3>
-          {inicial.id
-            ? 'Editar pregunta'
-            : 'Nueva pregunta'}
-        </h3>
+        <div className="panel-modal-header">
 
-        <label className="admin-label">
-          Pregunta
-        </label>
+          <div>
 
-        <textarea
-          className="admin-textarea"
-          rows={2}
-          required
-          value={form.pregunta}
-          onChange={(e) =>
-            setForm({
-              ...form,
-              pregunta:
-                e.target.value,
-            })
-          }
-        />
+            <p>
+              Administración
+            </p>
 
-        <label className="admin-label">
-          Tipo
-        </label>
+            <h3>
 
-        <select
-          className="admin-select"
-          value={form.tipo_pregunta}
-          onChange={(e) =>
-            setForm({
-              ...form,
-              tipo_pregunta:
-                e.target.value,
-            })
-          }
-        >
+              {inicial.id
+                ? 'Editar Pregunta'
+                : 'Nueva Pregunta'}
 
-          {TIPOS.map((t) => (
-            <option
-              key={t.value}
-              value={t.value}
-            >
-              {t.label}
-            </option>
-          ))}
+            </h3>
 
-        </select>
+          </div>
 
-        <label className="admin-label">
-          Categoría
-        </label>
-
-        <select
-          className="admin-select"
-          value={form.categoria}
-          onChange={(e) =>
-            setForm({
-              ...form,
-              categoria:
-                e.target.value,
-            })
-          }
-        >
-
-          <option value="">
-            Seleccionar categoría
-          </option>
-
-          {CATEGORIAS.map((cat) => (
-            <option
-              key={cat}
-              value={cat}
-            >
-              {cat}
-            </option>
-          ))}
-
-        </select>
-
-        {inicial.id && (
-
-          <label
-            style={{
-              display: 'flex',
-              gap: 8,
-              marginTop: 12,
-            }}
+          <button
+            type="button"
+            className="panel-close-btn"
+            onClick={onCerrar}
           >
 
-            <input
-              type="checkbox"
-              checked={form.activa}
+            <X size={18} />
+
+          </button>
+
+        </div>
+
+        <div className="panel-modal-form">
+
+          <div className="panel-form-group">
+
+            <label>
+              Pregunta
+            </label>
+
+            <textarea
+              className="panel-input"
+              rows={3}
+              required
+              value={
+                form.pregunta
+              }
               onChange={(e) =>
                 setForm({
                   ...form,
-                  activa:
-                    e.target.checked,
+                  pregunta:
+                    e.target.value,
                 })
               }
             />
 
-            Activa
-
-          </label>
-        )}
-
-        {error && (
-          <div className="admin-error">
-            {error}
           </div>
-        )}
 
-        <div
-          className="admin-row"
-          style={{
-            justifyContent: 'flex-end',
-            marginTop: 18,
-          }}
-        >
+          <div className="panel-form-group">
+
+            <label>
+              Tipo
+            </label>
+
+            <select
+              className="panel-input"
+              value={
+                form.tipo_pregunta
+              }
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  tipo_pregunta:
+                    e.target.value,
+                })
+              }
+            >
+
+              {TIPOS.map((t) => (
+
+                <option
+                  key={t.value}
+                  value={t.value}
+                >
+
+                  {t.label}
+
+                </option>
+
+              ))}
+
+            </select>
+
+          </div>
+
+          <div className="panel-form-group">
+
+            <label>
+              Categoría
+            </label>
+
+            <select
+              className="panel-input"
+              value={
+                form.categoria
+              }
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  categoria:
+                    e.target.value,
+                })
+              }
+            >
+
+              <option value="">
+                Seleccionar categoría
+              </option>
+
+              {CATEGORIAS.map(
+                (cat) => (
+
+                  <option
+                    key={cat}
+                    value={cat}
+                  >
+
+                    {cat}
+
+                  </option>
+
+                )
+              )}
+
+            </select>
+
+          </div>
+
+          {inicial.id && (
+
+            <label
+              style={{
+                display: 'flex',
+                gap: 10,
+                alignItems:
+                  'center',
+              }}
+            >
+
+              <input
+                type="checkbox"
+                checked={
+                  form.activa
+                }
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    activa:
+                      e.target.checked,
+                  })
+                }
+              />
+
+              Activa
+
+            </label>
+
+          )}
+
+          {error && (
+            <div className="admin-error">
+              {error}
+            </div>
+          )}
 
           <button
-            type="button"
-            className="admin-btn admin-btn--ghost"
-            onClick={onCerrar}
-          >
-            Cancelar
-          </button>
-
-          <button
-            className="admin-btn"
+            className="panel-save-btn"
             disabled={enviando}
           >
+
             {enviando
-              ? 'Guardando…'
+              ? 'Guardando...'
               : 'Guardar'}
+
           </button>
 
         </div>

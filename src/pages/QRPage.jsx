@@ -1,5 +1,13 @@
 import { useEffect, useState } from 'react'
 
+import {
+  QrCode,
+  Gift,
+  Info,
+  Download,
+  Sparkles,
+} from 'lucide-react'
+
 import { qrApi } from '../api/endpoints'
 
 export default function QRPage() {
@@ -49,6 +57,7 @@ export default function QRPage() {
     } finally {
 
       setCargando(false)
+
     }
   }
 
@@ -87,6 +96,7 @@ export default function QRPage() {
       )
 
       setTitulo('')
+
       setDescripcion('')
 
       cargar()
@@ -101,17 +111,27 @@ export default function QRPage() {
     } finally {
 
       setGenerando(false)
+
     }
   }
 
   return (
-    <>
 
-      <div className="admin-topbar">
+    <div className="panel-page">
 
-        <h2>
-          Gestión QR
-        </h2>
+      <div className="panel-topbar">
+
+        <div>
+
+          <p className="panel-subtitle">
+            Panel Administrativo
+          </p>
+
+          <h1 className="panel-title">
+            Gestión QR
+          </h1>
+
+        </div>
 
       </div>
 
@@ -121,128 +141,183 @@ export default function QRPage() {
         </div>
       )}
 
-      <form
-        className="admin-card"
-        onSubmit={generarQR}
+      <div
+        className="panel-table-card"
         style={{
-          marginBottom: 24,
+          marginBottom: 30,
         }}
       >
 
-        <h3
+        <form
+          onSubmit={generarQR}
+          className="panel-modal-form"
           style={{
-            marginTop: 0,
-          }}
-        >
-          Generar QR
-        </h3>
-
-        <label className="admin-label">
-          Tipo QR
-        </label>
-
-        <select
-          className="admin-select"
-          value={tipo}
-          onChange={(e) =>
-            setTipo(
-              e.target.value
-            )
-          }
-        >
-
-          <option value="puntos">
-            🎁 Puntos
-          </option>
-
-          <option value="informacion">
-            ℹ️ Información
-          </option>
-
-        </select>
-
-        {tipo === 'puntos' ? (
-
-          <>
-
-            <label className="admin-label">
-              Puntos
-            </label>
-
-            <input
-              className="admin-input"
-              type="number"
-              min="1"
-              value={puntos}
-              onChange={(e) =>
-                setPuntos(
-                  e.target.value
-                )
-              }
-            />
-
-          </>
-
-        ) : (
-
-          <>
-
-            <label className="admin-label">
-              Título
-            </label>
-
-            <input
-              className="admin-input"
-              value={titulo}
-              onChange={(e) =>
-                setTitulo(
-                  e.target.value
-                )
-              }
-            />
-
-            <label className="admin-label">
-              Descripción
-            </label>
-
-            <textarea
-              rows={4}
-              className="admin-textarea"
-              value={descripcion}
-              onChange={(e) =>
-                setDescripcion(
-                  e.target.value
-                )
-              }
-            />
-
-          </>
-
-        )}
-
-        <button
-          className="admin-btn"
-          disabled={generando}
-          style={{
-            marginTop: 18,
+            padding: 28,
           }}
         >
 
-          {generando
-            ? 'Generando...'
-            : 'Generar QR'}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 10,
+              marginBottom: 10,
+            }}
+          >
 
-        </button>
+            <QrCode size={24} />
 
-      </form>
+            <h2
+              style={{
+                margin: 0,
+                color:
+                  'var(--ucb-azul-oscuro)',
+              }}
+            >
 
-      <h3
+              Generar QR
+
+            </h2>
+
+          </div>
+
+          <div className="panel-form-group">
+
+            <label>
+              Tipo QR
+            </label>
+
+            <select
+              className="panel-input"
+              value={tipo}
+              onChange={(e) =>
+                setTipo(
+                  e.target.value
+                )
+              }
+            >
+
+              <option value="puntos">
+                🎁 Puntos
+              </option>
+
+              <option value="informacion">
+                ℹ️ Información
+              </option>
+
+            </select>
+
+          </div>
+
+          {tipo === 'puntos' ? (
+
+            <div className="panel-form-group">
+
+              <label>
+                Puntos
+              </label>
+
+              <input
+                className="panel-input"
+                type="number"
+                min="1"
+                value={puntos}
+                onChange={(e) =>
+                  setPuntos(
+                    e.target.value
+                  )
+                }
+              />
+
+            </div>
+
+          ) : (
+
+            <>
+              <div className="panel-form-group">
+
+                <label>
+                  Título
+                </label>
+
+                <input
+                  className="panel-input"
+                  value={titulo}
+                  onChange={(e) =>
+                    setTitulo(
+                      e.target.value
+                    )
+                  }
+                />
+
+              </div>
+
+              <div className="panel-form-group">
+
+                <label>
+                  Descripción
+                </label>
+
+                <textarea
+                  rows={4}
+                  className="panel-input"
+                  value={descripcion}
+                  onChange={(e) =>
+                    setDescripcion(
+                      e.target.value
+                    )
+                  }
+                />
+
+              </div>
+            </>
+          )}
+
+          <button
+            className="panel-save-btn"
+            disabled={generando}
+          >
+
+            <Sparkles
+              size={17}
+              style={{
+                marginRight: 8,
+              }}
+            />
+
+            {generando
+              ? 'Generando...'
+              : 'Generar QR'}
+
+          </button>
+
+        </form>
+
+      </div>
+
+      <div
         style={{
-          marginBottom: 16,
+          marginBottom: 18,
         }}
       >
-        QRs generados
-      </h3>
+
+        <p className="panel-subtitle">
+          Historial
+        </p>
+
+        <h2
+          style={{
+            margin: 0,
+            color:
+              'var(--ucb-azul-oscuro)',
+          }}
+        >
+
+          QRs Generados
+
+        </h2>
+
+      </div>
 
       {cargando ? (
 
@@ -254,8 +329,8 @@ export default function QRPage() {
           style={{
             display: 'grid',
             gridTemplateColumns:
-              'repeat(auto-fit, minmax(260px, 1fr))',
-            gap: 18,
+              'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: 22,
           }}
         >
 
@@ -263,7 +338,10 @@ export default function QRPage() {
 
             <div
               key={qr.id}
-              className="admin-card"
+              className="panel-table-card"
+              style={{
+                padding: 24,
+              }}
             >
 
               <div
@@ -271,92 +349,134 @@ export default function QRPage() {
                   display: 'flex',
                   justifyContent:
                     'space-between',
-                  marginBottom: 12,
+                  alignItems:
+                    'center',
+                  marginBottom: 20,
                 }}
               >
 
                 <span
-                  className={`admin-chip ${
+                  className={`panel-pill ${
                     qr.tipo ===
                     'puntos'
-                      ? 'admin-chip--gold'
-                      : 'admin-chip--ok'
+                      ? 'panel-pill-warning'
+                      : 'panel-pill-success'
                   }`}
                 >
 
                   {qr.tipo ===
-                  'puntos'
-                    ? '🎁 Puntos'
-                    : 'ℹ️ Información'}
+                  'puntos' ? (
+
+                    <>
+                      <Gift
+                        size={14}
+                        style={{
+                          marginRight: 6,
+                        }}
+                      />
+
+                      Puntos
+                    </>
+
+                  ) : (
+
+                    <>
+                      <Info
+                        size={14}
+                        style={{
+                          marginRight: 6,
+                        }}
+                      />
+
+                      Información
+                    </>
+
+                  )}
 
                 </span>
 
                 <span
                   style={{
-                    fontSize: 12,
-                    color: '#6b7280',
+                    fontSize: 13,
+                    color: '#94a3b8',
                   }}
                 >
+
                   #{qr.id}
+
                 </span>
 
               </div>
 
               <div
-  style={{
-    display: 'flex',
-    justifyContent: 'center',
-    marginBottom: 14,
-  }}
->
+                style={{
+                  display: 'flex',
+                  justifyContent:
+                    'center',
+                  marginBottom: 22,
+                }}
+              >
 
-  <img
-    src={qr.qr_base64}
-    alt="QR"
-    style={{
-      width: 180,
-      height: 180,
-      objectFit: 'contain',
-      borderRadius: 16,
-      background: '#fff',
-      padding: 10,
-      border: '1px solid #e5e7eb',
-      boxShadow:
-        '0 4px 14px rgba(0,0,0,.08)',
-      cursor: 'pointer',
-      transition: '.2s',
-    }}
-    onClick={() =>
-      window.open(
-        qr.qr_base64,
-        '_blank'
-      )
-    }
-  />
+                <img
+                  src={qr.qr_base64}
+                  alt="QR"
+                  style={{
+                    width: 220,
+                    height: 220,
+                    objectFit:
+                      'contain',
+                    borderRadius: 24,
+                    background:
+                      '#ffffff',
+                    padding: 14,
+                    border:
+                      '1px solid #e2e8f0',
+                    boxShadow:
+                      '0 10px 30px rgba(0,0,0,.08)',
+                    cursor:
+                      'pointer',
+                    transition:
+                      '.2s ease',
+                  }}
+                  onClick={() =>
+                    window.open(
+                      qr.qr_base64,
+                      '_blank'
+                    )
+                  }
+                />
 
-</div>
+              </div>
+
               <div
                 style={{
-                  fontSize: 13,
-                  color: '#374151',
-                  marginBottom: 12,
-                  wordBreak:
-                    'break-word',
+                  background:
+                    '#f8fafc',
+                  border:
+                    '1px solid #e2e8f0',
+                  borderRadius: 16,
+                  padding: 16,
+                  marginBottom: 18,
                 }}
               >
 
                 <pre
                   style={{
+                    margin: 0,
                     whiteSpace:
                       'pre-wrap',
-                    margin: 0,
+                    fontSize: 13,
+                    color:
+                      '#475569',
                   }}
                 >
+
                   {JSON.stringify(
                     qr.contenido_json,
                     null,
                     2
                   )}
+
                 </pre>
 
               </div>
@@ -364,21 +484,30 @@ export default function QRPage() {
               <a
                 href={qr.qr_base64}
                 download={`qr-${qr.id}.png`}
-                className="admin-btn admin-btn--ghost"
+                className="panel-create-btn"
                 style={{
                   width: '100%',
-                  textAlign: 'center',
+                  justifyContent:
+                    'center',
                 }}
               >
+
+                <Download
+                  size={17}
+                />
+
                 Descargar QR
+
               </a>
 
             </div>
+
           ))}
 
         </div>
+
       )}
 
-    </>
+    </div>
   )
 }

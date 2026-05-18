@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+
 import {
   Plus,
   Pencil,
@@ -45,7 +46,9 @@ const initialForm = {
 }
 
 export default function ColegiosPage() {
+
   const [items, setItems] = useState([])
+
   const [cargando, setCargando] = useState(true)
 
   const [form, setForm] = useState(initialForm)
@@ -59,20 +62,27 @@ export default function ColegiosPage() {
   const [colegioEditando, setColegioEditando] = useState(null)
 
   const [error, setError] = useState('')
+
   const [success, setSuccess] = useState('')
 
   const cargar = async () => {
     try {
+
       const { data } = await colegiosApi.listar()
 
       setItems(data.data)
+
     } catch (e) {
+
       setError(
         e.response?.data?.error ||
         'Error al cargar colegios'
       )
+
     } finally {
+
       setCargando(false)
+
     }
   }
 
@@ -81,13 +91,16 @@ export default function ColegiosPage() {
   }, [])
 
   const handleChange = (e) => {
+
     setForm((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }))
+
   }
 
   const abrirCrear = () => {
+
     setModoEdicion(false)
 
     setColegioEditando(null)
@@ -95,9 +108,11 @@ export default function ColegiosPage() {
     setForm(initialForm)
 
     setModalOpen(true)
+
   }
 
   const abrirEditar = (colegio) => {
+
     setModoEdicion(true)
 
     setColegioEditando(colegio)
@@ -111,12 +126,15 @@ export default function ColegiosPage() {
     })
 
     setModalOpen(true)
+
   }
 
   const guardar = async (e) => {
+
     e.preventDefault()
 
     setError('')
+
     setSuccess('')
 
     if (
@@ -124,14 +142,18 @@ export default function ColegiosPage() {
       !form.ciudad.trim() ||
       !form.departamento.trim()
     ) {
+
       setError(
         'Nombre, ciudad y departamento son obligatorios'
       )
+
       return
     }
 
     try {
+
       if (modoEdicion) {
+
         await colegiosApi.actualizar(
           colegioEditando.id,
           form
@@ -140,12 +162,15 @@ export default function ColegiosPage() {
         setSuccess(
           'Colegio actualizado correctamente'
         )
+
       } else {
+
         await colegiosApi.crear(form)
 
         setSuccess(
           'Colegio creado correctamente'
         )
+
       }
 
       setModalOpen(false)
@@ -153,30 +178,39 @@ export default function ColegiosPage() {
       setForm(initialForm)
 
       cargar()
+
     } catch (e) {
+
       setError(
         e.response?.data?.error ||
         'No se pudo guardar'
       )
+
     }
   }
 
   const eliminar = async (id) => {
+
     if (!window.confirm('¿Eliminar colegio?')) return
 
     try {
+
       await colegiosApi.eliminar(id)
 
       cargar()
+
     } catch (e) {
+
       setError(
         e.response?.data?.error ||
         'No se pudo eliminar'
       )
+
     }
   }
 
   const filtrados = useMemo(() => {
+
     return items.filter((c) =>
       [
         c.nombre,
@@ -188,30 +222,36 @@ export default function ColegiosPage() {
         .toLowerCase()
         .includes(busqueda.toLowerCase())
     )
+
   }, [items, busqueda])
 
   return (
-    <div className="college-page">
 
-      <div className="college-topbar">
+    <div className="panel-page">
+
+      <div className="panel-topbar">
 
         <div>
-          <p className="college-subtitle">
+
+          <p className="panel-subtitle">
             Panel Administrativo
           </p>
 
-          <h1 className="college-title">
+          <h1 className="panel-title">
             Colegios
           </h1>
+
         </div>
 
         <button
-          className="college-create-btn"
+          className="panel-create-btn"
           onClick={abrirCrear}
         >
+
           <Plus size={18} />
 
           Nuevo Colegio
+
         </button>
 
       </div>
@@ -228,11 +268,11 @@ export default function ColegiosPage() {
         </div>
       )}
 
-      <div className="college-table-card">
+      <div className="panel-table-card">
 
-        <div className="college-table-header">
+        <div className="panel-table-header">
 
-          <div className="college-search-box">
+          <div className="panel-search-box">
 
             <Search size={18} />
 
@@ -247,7 +287,7 @@ export default function ColegiosPage() {
 
           </div>
 
-          <div className="college-count">
+          <div className="panel-count">
 
             {filtrados.length} colegios
 
@@ -256,33 +296,40 @@ export default function ColegiosPage() {
         </div>
 
         {cargando ? (
-          <div className="admin-loader" />
-        ) : (
-          <div className="college-table-wrapper">
 
-            <table className="college-table">
+          <div className="admin-loader" />
+
+        ) : (
+
+          <div className="panel-table-wrapper">
+
+            <table className="panel-table">
 
               <thead>
+
                 <tr>
                   <th>Colegio</th>
                   <th>Ubicación</th>
                   <th>País</th>
                   <th>Acciones</th>
                 </tr>
+
               </thead>
 
               <tbody>
 
                 {filtrados.map((c) => (
+
                   <tr key={c.id}>
 
                     <td>
 
-                      <div className="college-name">
+                      <div className="panel-entity">
 
                         <Building2 size={17} />
 
                         <div>
+
                           <strong>
                             {c.nombre}
                           </strong>
@@ -292,6 +339,7 @@ export default function ColegiosPage() {
                               {c.direccion}
                             </p>
                           )}
+
                         </div>
 
                       </div>
@@ -300,7 +348,7 @@ export default function ColegiosPage() {
 
                     <td>
 
-                      <div className="college-location">
+                      <div className="panel-location">
 
                         <MapPin size={16} />
 
@@ -314,7 +362,7 @@ export default function ColegiosPage() {
 
                     <td>
 
-                      <span className="college-country-pill">
+                      <span className="panel-pill panel-pill-warning">
                         {c.pais}
                       </span>
 
@@ -322,17 +370,19 @@ export default function ColegiosPage() {
 
                     <td>
 
-                      <div className="college-actions">
+                      <div className="panel-actions">
 
                         <button
-                          className="college-icon-btn edit"
+                          className="panel-icon-btn edit"
+                          data-tooltip="Editar"
                           onClick={() => abrirEditar(c)}
                         >
                           <Pencil size={16} />
                         </button>
 
                         <button
-                          className="college-icon-btn delete"
+                          className="panel-icon-btn delete"
+                          data-tooltip="Eliminar Colegio"
                           onClick={() => eliminar(c.id)}
                         >
                           <Trash2 size={16} />
@@ -343,10 +393,13 @@ export default function ColegiosPage() {
                     </td>
 
                   </tr>
+
                 ))}
 
                 {filtrados.length === 0 && (
+
                   <tr>
+
                     <td
                       colSpan="4"
                       style={{
@@ -355,9 +408,13 @@ export default function ColegiosPage() {
                         opacity: 0.7,
                       }}
                     >
+
                       No hay colegios registrados
+
                     </td>
+
                   </tr>
+
                 )}
 
               </tbody>
@@ -370,17 +427,18 @@ export default function ColegiosPage() {
       </div>
 
       {modalOpen && (
+
         <div
-          className="college-modal-overlay"
+          className="panel-modal-overlay"
           onClick={() => setModalOpen(false)}
         >
 
           <div
-            className="college-modal"
+            className="panel-modal"
             onClick={(e) => e.stopPropagation()}
           >
 
-            <div className="college-modal-header">
+            <div className="panel-modal-header">
 
               <div>
 
@@ -397,27 +455,29 @@ export default function ColegiosPage() {
               </div>
 
               <button
-                className="college-close-btn"
+                className="panel-close-btn"
                 onClick={() => setModalOpen(false)}
               >
+
                 <X size={18} />
+
               </button>
 
             </div>
 
             <form
               onSubmit={guardar}
-              className="college-modal-form"
+              className="panel-modal-form"
             >
 
-              <div className="college-form-group">
+              <div className="panel-form-group">
 
                 <label>
                   Nombre del colegio
                 </label>
 
                 <input
-                  className="college-input"
+                  className="panel-input"
                   placeholder="Unidad Educativa..."
                   name="nombre"
                   value={form.nombre}
@@ -426,14 +486,14 @@ export default function ColegiosPage() {
 
               </div>
 
-              <div className="college-form-group">
+              <div className="panel-form-group">
 
                 <label>
                   Dirección
                 </label>
 
                 <input
-                  className="college-input"
+                  className="panel-input"
                   placeholder="Av. ..."
                   name="direccion"
                   value={form.direccion}
@@ -442,74 +502,82 @@ export default function ColegiosPage() {
 
               </div>
 
-              <div className="college-form-row">
+              <div className="panel-form-row">
 
-                <div className="college-form-group">
+                <div className="panel-form-group">
 
                   <label>
                     Ciudad
                   </label>
 
                   <select
-                    className="college-input"
+                    className="panel-input"
                     name="ciudad"
                     value={form.ciudad}
                     onChange={handleChange}
                   >
+
                     <option value="">
                       Seleccionar ciudad
                     </option>
 
                     {ciudadesBolivia.map((c) => (
+
                       <option
                         key={c}
                         value={c}
                       >
                         {c}
                       </option>
+
                     ))}
+
                   </select>
 
                 </div>
 
-                <div className="college-form-group">
+                <div className="panel-form-group">
 
                   <label>
                     Departamento
                   </label>
 
                   <select
-                    className="college-input"
+                    className="panel-input"
                     name="departamento"
                     value={form.departamento}
                     onChange={handleChange}
                   >
+
                     <option value="">
                       Seleccionar departamento
                     </option>
 
                     {departamentosBolivia.map((d) => (
+
                       <option
                         key={d}
                         value={d}
                       >
                         {d}
                       </option>
+
                     ))}
+
                   </select>
 
                 </div>
 
               </div>
 
-              <div className="college-form-group">
+              <div className="panel-form-group">
 
                 <label>
                   País
                 </label>
 
                 <input
-                  className="college-input"
+                  className="panel-input"
                   placeholder="Bolivia"
                   name="pais"
                   value={form.pais}
@@ -520,11 +588,13 @@ export default function ColegiosPage() {
 
               <button
                 type="submit"
-                className="college-save-btn"
+                className="panel-save-btn"
               >
+
                 {modoEdicion
                   ? 'Guardar Cambios'
                   : 'Crear Colegio'}
+
               </button>
 
             </form>
@@ -532,6 +602,7 @@ export default function ColegiosPage() {
           </div>
 
         </div>
+
       )}
 
     </div>
